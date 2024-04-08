@@ -2,10 +2,6 @@ import MyInput from "./components/UI/input/MyInput";
 import MySelect from "./components/UI/select/MySelect";
 
 const PostFilter = ({ filter, setFilter }) => {
-  if (!postMessage.length) {
-    return <h1 style={{ textAlign: "center" }}>Posts not found</h1>;
-  }
-
   return (
     <div>
       <MyInput
