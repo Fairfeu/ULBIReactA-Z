@@ -21,12 +21,14 @@ function Posts() {
   const [page, setPage] = useState(1);
   const sortedAndSearchedPosts = usePosts(posts, filter.sort, filter.query);
 
-  const [fetchPosts, isPostLoading, postError] = useFetching(async () => {
-    const response = await PostService.getAll(limit, page);
-    setPosts(response.data);
-    const totalCount = response.headers["x-total-count"];
-    setTotalPages(getPageCount(totalCount, limit));
-  });
+  const [fetchPosts, isPostLoading, postError] = useFetching(
+    async (limit, page) => {
+      const response = await PostService.getAll(limit, page);
+      setPosts(...posts, ...response.data);
+      const totalCount = response.headers["x-total-count"];
+      setTotalPages(getPageCount(totalCount, limit));
+    }
+  );
 
   useEffect(() => {
     fetchPosts();
@@ -58,8 +60,12 @@ function Posts() {
       <PostFilter filter={filter} setFilter={setFilter} />
 
       {postError && <h1>Error ${postError}</h1>}
-
-      {isPostLoading ? (
+      <PostList
+        title={"posts about JS"}
+        remove={removePost}
+        posts={sortedAndSearchedPosts}
+      ></PostList>
+      {isPostLoading && (
         <div
           style={{
             display: "flex",
@@ -69,12 +75,6 @@ function Posts() {
         >
           <Loader />
         </div>
-      ) : (
-        <PostList
-          title={"posts about JS"}
-          remove={removePost}
-          posts={sortedAndSearchedPosts}
-        ></PostList>
       )}
       <Pagination
         page={page}

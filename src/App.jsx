@@ -4,10 +4,12 @@ import Navbar from "./components/UI/Navbar/Navbar";
 import AppRouter from "./AppRouter";
 function App() {
   return (
-    <BrowserRouter>
-      <Navbar />
-      <AppRouter />
-    </BrowserRouter>
+    <>
+      <BrowserRouter>
+        <Navbar />
+        <AppRouter />
+      </BrowserRouter>
+    </>
   );
 }
 
